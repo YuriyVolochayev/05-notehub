@@ -9,7 +9,7 @@ interface FetchNotesResponse {
     totalPages: number
 }
 
-export const fetchNotes = async (search: string, page = 1, perPage = 10): Promise<FetchNotesResponse> => {
+export const fetchNotes = async (search: string, page = 1, perPage = 12): Promise<FetchNotesResponse> => {
 
     const params: Record<string, string> = {
         page: String(page),
