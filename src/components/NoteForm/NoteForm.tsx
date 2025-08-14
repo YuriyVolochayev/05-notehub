@@ -7,13 +7,12 @@ import { Loading } from "notiflix"
 import toast from "react-hot-toast"
 
 interface NoteFormProps {
-    query: string
-    page: number
+
     onSubmit: () => void
     onCancel: () => void
 }
 
-const formTags = ['Work', 'Personal', 'Meeting', 'Shopping', 'Todo'] as const
+const formTags = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'] as const
 
 export interface InitialValues {
     title: string
@@ -29,7 +28,7 @@ const initialValues: InitialValues = {
 
 const NoteFormSchema = Yup.object().shape({
     title: Yup.string()
-        .min(3, 'Title must be at least 5 characters')
+        .min(3, 'Title must be at least 3 characters')
         .max(50, 'Title is to long')
         .required('Title is required'),
     content: Yup.string()
@@ -38,7 +37,7 @@ const NoteFormSchema = Yup.object().shape({
     
 })
 
-export default function NoteForm({ query, page, onSubmit, onCancel }: NoteFormProps) {
+export default function NoteForm({ onSubmit, onCancel }: NoteFormProps) {
     
     const queryClient = useQueryClient();
     const mutation = useMutation({
@@ -47,13 +46,7 @@ export default function NoteForm({ query, page, onSubmit, onCancel }: NoteFormPr
             return data
         },
 
-        onSuccess: () => {
-            onSubmit()
-            Loading.remove()
-            toast.success('Note created successfully')
-            queryClient.invalidateQueries({queryKey: ['notes', query, page]})
-        },
-
+        
         onError: () => {
             Loading.remove()
             toast.error('Error creating note')
@@ -63,8 +56,15 @@ export default function NoteForm({ query, page, onSubmit, onCancel }: NoteFormPr
     const handleSubmit = (values: InitialValues, actions: FormikHelpers<InitialValues>
     ) => {
         Loading.pulse()
-        mutation.mutate(values)
-        actions.resetForm()
+        mutation.mutate(values, {
+            onSuccess: () => {
+            actions.resetForm()
+            onSubmit()
+            Loading.remove()
+            toast.success('Note created successfully')
+            queryClient.invalidateQueries({queryKey: ['notes']})
+        },
+        })
     }
     
     return (

@@ -29,9 +29,9 @@ export default function App() {
 
     const totalPages = notes?.totalPages ?? 1
     const onQueryChange = useDebouncedCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
+        (value: string) => {
             setPage(1)
-            setQuery(e.target.value)
+            setQuery(value)
         }, 400
     )
 
@@ -63,8 +63,6 @@ export default function App() {
                     <NoteList notes={notes.notes} />)}
             {isModalOpen && (<Modal onClose={closeModal}>
                 <NoteForm
-                    query={debouncedQuery}
-                    page={page}
                     onSubmit={closeModal}
                     onCancel={closeModal}
                 />

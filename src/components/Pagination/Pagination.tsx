@@ -1,7 +1,7 @@
 import ReactPaginate from "react-paginate";
 import css from './Pagination.module.css'
 
-interface ReactPaginateProps {
+interface PaginationProps {
     pageCount: number;
     currentPage: number;
     onPageChange: (currentPage: number) => void;
@@ -9,7 +9,7 @@ interface ReactPaginateProps {
 
 export default function Pagination({
     pageCount, currentPage, onPageChange,
-}: ReactPaginateProps) {
+}: PaginationProps) {
     if (pageCount <= 1) return null;
     
     return (
