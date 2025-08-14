@@ -1,6 +1,6 @@
 import css from './NoteList.module.css'
-import type { Note } from '../types/note'
-import { deleteNote } from '../services/noteService'
+import type { Note } from '../../types/note'
+import { deleteNote } from '../../services/noteService'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loading } from "notiflix"
 import toast from 'react-hot-toast'
@@ -17,13 +17,13 @@ export default function NoteList({ notes }: NoteListProps) {
 
         onSuccess: () => {
             Loading.remove()
-            toast.success("Note deleted")
+            toast.success("Note created successfully")
             queryClient.invalidateQueries({ queryKey: ['notes'] });
         },
 
         onError: () => {
             Loading.remove()
-            toast.error("Error")
+            toast.error("Error creating note")
         },
 
     })

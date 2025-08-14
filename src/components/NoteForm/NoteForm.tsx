@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage, type FormikHelpers} from "formik"
 import css from './NoteForm.module.css'
 import * as Yup from 'yup'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createNote } from "../services/noteService"
+import { createNote } from "../../services/noteService"
 import { Loading } from "notiflix"
 import toast from "react-hot-toast"
 
@@ -50,13 +50,13 @@ export default function NoteForm({ query, page, onSubmit, onCancel }: NoteFormPr
         onSuccess: () => {
             onSubmit()
             Loading.remove()
-            toast.success('Note created successfully ✅')
+            toast.success('Note created successfully')
             queryClient.invalidateQueries({queryKey: ['notes', query, page]})
         },
 
         onError: () => {
             Loading.remove()
-            toast.error('Error creating note ❌')
+            toast.error('Error creating note')
         },
     })
 
@@ -98,7 +98,7 @@ export default function NoteForm({ query, page, onSubmit, onCancel }: NoteFormPr
                     <ErrorMessage name="tag" component="span" className={css.error} />
                 </div>
                 <div className={css.actions}>
-                    <button type="button" className={css.cancelButton} onChangeCapture={onCancel}>Cancel</button>
+                    <button type="button" className={css.cancelButton} onClick={onCancel}>Cancel</button>
                     <button type="submit" className={css.submitButton}>Create note</button>
                 </div>
             </Form>

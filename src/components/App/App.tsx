@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import css from "./App.module.css"
 import NoteList from '../NoteList/NoteList'
-import { fetchNotes } from '../services/noteService'
+import { fetchNotes } from '../../services/noteService'
 import Pagination from '../Pagination/Pagination'
 import { Loading } from 'notiflix'
 import { useDebounce, useDebouncedCallback } from 'use-debounce'
@@ -39,6 +39,10 @@ export default function App() {
         setIsModalOpen(true)
     }
 
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
+
     useEffect(() => {
         if (isLoading) {
             Loading.pulse()
@@ -47,24 +51,17 @@ export default function App() {
         }
     }, [isLoading])
 
-    const closeModal = () => {
-        setIsModalOpen(false)
-    }
-
-
-
-
-    return (
+        return (
         <div className={css.app}>
             <Toaster/>
             <header className={css.toolbar}>
                 <SearchBox onSearch={onQueryChange}/>
                 {totalPages > 1 && (<Pagination pageCount={totalPages} currentPage={page} onPageChange={setPage} />)}
-                {<button className={css.button} onClick={openModal}>Create note +</button>}
+                <button className={css.button} onClick={openModal}>Create note +</button>
             </header>
-            {isSuccess && notes && (<NoteList notes={notes.notes} />)}
-            {isModalOpen && (
-                <Modal onClose={closeModal}>
+                {isSuccess && notes && (
+                    <NoteList notes={notes.notes} query={debouncedQuery} />)}
+            {isModalOpen && (<Modal onClose={closeModal}>
                 <NoteForm
                     query={debouncedQuery}
                     page={page}
