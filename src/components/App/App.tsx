@@ -60,7 +60,7 @@ export default function App() {
                 <button className={css.button} onClick={openModal}>Create note +</button>
             </header>
                 {isSuccess && notes && (
-                    <NoteList notes={notes.notes} query={debouncedQuery} />)}
+                    <NoteList notes={notes.notes} />)}
             {isModalOpen && (<Modal onClose={closeModal}>
                 <NoteForm
                     query={debouncedQuery}
